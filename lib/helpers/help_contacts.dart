@@ -40,7 +40,7 @@ class ContactHelper {
     return await openDatabase(
         path, version: 1, onCreate: (Database db, int newerVersion) async {
       await db.execute(
-          "CREAT TABLE $contactTable($columnId INTEGER PRIMARY KEY, $columnNome TEXT, $columnCargo TEXT, $columnEmpresa TEXT,"
+          "CREATE TABLE $contactTable($columnId INTEGER PRIMARY KEY, $columnNome TEXT, $columnCargo TEXT, $columnEmpresa TEXT,"
               "$columnTipoEmpresa TEXT, $columnTelefone TEXT, $columnEmail TEXT, $columnAssunto TEXT, $columnImg TEXT)"
       );
     });
