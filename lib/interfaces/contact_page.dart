@@ -22,6 +22,10 @@ class _ContactPageState extends State<ContactPage> {
   final _assuntoControler = TextEditingController();
 
   final _nameFocus = FocusNode();
+  final _cargoFocus = FocusNode();
+  final _empresaFocus = FocusNode();
+  final _telefoneFocus = FocusNode();
+
 
   bool _userEdited = false;
   Contact _editContact;
@@ -52,6 +56,12 @@ class _ContactPageState extends State<ContactPage> {
       onWillPop: _butonBack,
       child: Scaffold(
         appBar: AppBar(
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.delete, color: Colors.orange),
+                onPressed: (){
+
+                })
+          ],
           backgroundColor: Colors.orange,
           title: Text(_editContact.nome ?? "Novo contato"),
           centerTitle: true,
@@ -67,10 +77,27 @@ class _ContactPageState extends State<ContactPage> {
           ),
           backgroundColor: Colors.orange,
           onPressed: (){
-            if(_editContact.nome != null && _editContact.nome.isNotEmpty){
-              Navigator.pop(context, _editContact);
-            }else{
-              FocusScope.of(context).requestFocus(_nameFocus);
+
+            //FILD VALIDATION
+            if(_editContact.nome != null && _editContact.nome.isNotEmpty &&
+                    _editContact.empresa != null && _editContact.empresa.isNotEmpty &&
+                      _editContact.telefone != null && _editContact.telefone.isNotEmpty){
+                        Navigator.pop(context, _editContact);
+
+            }else if(_editContact.nome == null && _editContact.nome.isEmpty &&
+                        _editContact.empresa != null && _editContact.empresa.isEmpty &&
+                          _editContact.telefone != null && _editContact.telefone.isNotEmpty){
+                            FocusScope.of(context).requestFocus(_cargoFocus);
+
+            }else if(_editContact.nome != null && _editContact.nome.isNotEmpty &&
+                        _editContact.empresa == null && _editContact.empresa.isEmpty &&
+                          _editContact.telefone != null && _editContact.telefone.isEmpty){
+                            FocusScope.of(context).requestFocus(_empresaFocus);
+
+            }else if(_editContact.nome != null && _editContact.nome.isNotEmpty &&
+                        _editContact.empresa != null && _editContact.empresa.isNotEmpty &&
+                          _editContact.telefone == null && _editContact.telefone.isEmpty){
+                            FocusScope.of(context).requestFocus(_telefoneFocus);
             }
 
           },
@@ -82,7 +109,9 @@ class _ContactPageState extends State<ContactPage> {
               TextField(
                 controller: _nomeControler,
                 focusNode: _nameFocus,
-                decoration: InputDecoration(labelText: "Nome"),
+                decoration: InputDecoration(labelText: "Nome",
+                    icon: Icon(Icons.person, color: Colors.orange),
+                      hintText: "Informe o nome"),
                 onChanged: (text){
                   _userEdited = true;
                   setState(() {
@@ -92,7 +121,9 @@ class _ContactPageState extends State<ContactPage> {
               ),
               TextField(
                 controller: _cargoControler,
-                decoration: InputDecoration(labelText: "Cargo"),
+                decoration: InputDecoration(labelText: "Cargo",
+                icon: Icon(Icons.build, color: Colors.orange),
+                  hintText: "Informe o cargo"),
                 onChanged: (text){
                   _userEdited = true;
                   _editContact.cargo = text;
@@ -100,7 +131,9 @@ class _ContactPageState extends State<ContactPage> {
               ),
               TextField(
                 controller: _empresaControler,
-                decoration: InputDecoration(labelText: "Empresa"),
+                decoration: InputDecoration(labelText: "Empresa",
+                icon: Icon(Icons.business_center, color: Colors.orange),
+                hintText: "Informe a empresa"),
                 onChanged: (text){
                   _userEdited = true;
                   _editContact.empresa = text;
@@ -108,7 +141,9 @@ class _ContactPageState extends State<ContactPage> {
               ),
               TextField(
                 controller: _tipoEmpresaControler,
-                decoration: InputDecoration(labelText: "Tipo da Empresa"),
+                decoration: InputDecoration(labelText: "Tipo da Empresa",
+                icon: Icon(Icons.merge_type, color: Colors.orange),
+                hintText: "Informe o tipo da empresa"),
                 onChanged: (text){
                   _userEdited = true;
                   _editContact.tipoEmpresa = text;
@@ -116,7 +151,9 @@ class _ContactPageState extends State<ContactPage> {
               ),
               TextField(
                 controller: _telefoneControler,
-                decoration: InputDecoration(labelText: "Telefone"),
+                decoration: InputDecoration(labelText: "Telefone",
+                icon: Icon(Icons.phone, color: Colors.orange),
+                hintText: "Informe o telefone"),
                 onChanged: (text){
                   _userEdited = true;
                   _editContact.telefone = text;
@@ -125,7 +162,9 @@ class _ContactPageState extends State<ContactPage> {
               ),
               TextField(
                 controller: _emailControler,
-                decoration: InputDecoration(labelText: "E-Mail"),
+                decoration: InputDecoration(labelText: "E-Mail",
+                icon: Icon(Icons.email, color: Colors.orange),
+                hintText: "Informe o E-Mail"),
                 onChanged: (text){
                   _userEdited = true;
                   _editContact.email = text;
@@ -134,7 +173,9 @@ class _ContactPageState extends State<ContactPage> {
               ),
               TextField(
                 controller: _assuntoControler,
-                decoration: InputDecoration(labelText: "Assunto"),
+                decoration: InputDecoration(labelText: "Assunto",
+                icon: Icon(Icons.subject, color: Colors.orange),
+                hintText: "Informe o assunto do contato"),
                 onChanged: (text){
                   _userEdited = true;
                   _editContact.assunto = text;
@@ -182,13 +223,5 @@ class _ContactPageState extends State<ContactPage> {
       return Future.value(true);
     }
   }
-
- /* Widget campoText(String label, TextEditingController controller, TextInputType type, String text, Function teste(texto)){
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(labelText: label),
-      onChanged: teste,
-    );
-  }*/
 
 }

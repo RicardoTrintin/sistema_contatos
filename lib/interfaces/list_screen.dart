@@ -112,13 +112,8 @@ class _ListScreenState extends State<ListScreen> {
     );
   }
 
-
-
-
-
   void _showContactPage({Contact contact}) async {
-    final contactReceiv = await Navigator.push(context, MaterialPageRoute(builder: (context) => ContactPage(contact: contact))
-    );
+    final contactReceiv = await Navigator.push(context, MaterialPageRoute(builder: (context) => ContactPage(contact: contact)));
     if(contactReceiv != null){
       if(contact != null){
         await helper.editContact(contactReceiv);
