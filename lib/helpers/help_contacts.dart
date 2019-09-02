@@ -1,7 +1,10 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+//BANK TABLE CONTROL VARIABLE
 final String contactTable = "contacTable";
+
+//BANK COLUMNS CONTROL VARIABLES
 final String columnId = "columnId";
 final String columnNome = "columnNome";
 final String columnCargo = "columnCargo";
@@ -12,9 +15,7 @@ final String columnEmail = "columnEmail";
 final String columnAssunto = "columnAssunto";
 final String columnImg = "columnImg";
 
-
 class ContactHelper {
-
   static final ContactHelper _instance = ContactHelper.internal();
 
   factory ContactHelper() => _instance;
@@ -32,26 +33,26 @@ class ContactHelper {
     }
   }
 
-
   Future<Database> initDb() async {
     final databasePath = await getDatabasesPath();
     final path = join(databasePath, "contact.db");
 
-    return await openDatabase(
-        path, version: 1, onCreate: (Database db, int newerVersion) async {
+    return await openDatabase(path, version: 1,
+        onCreate: (Database db, int newerVersion) async {
       await db.execute(
           "CREATE TABLE $contactTable($columnId INTEGER PRIMARY KEY, $columnNome TEXT, $columnCargo TEXT, $columnEmpresa TEXT,"
-              "$columnTipoEmpresa TEXT, $columnTelefone TEXT, $columnEmail TEXT, $columnAssunto TEXT, $columnImg TEXT)"
-      );
+          "$columnTipoEmpresa TEXT, $columnTelefone TEXT, $columnEmail TEXT, $columnAssunto TEXT, $columnImg TEXT)");
     });
   }
 
+  //SAVE CONTACT IN DATABASE
   Future<Contact> saveContact(Contact contact) async {
     Database dbContact = await db;
     contact.id = await dbContact.insert(contactTable, contact.toMap());
     return contact;
   }
 
+  //GET A SPECIFIC BANK CONTACT
   Future<Contact> getContact(int id) async {
     Database dbContact = await db;
     List<Map> maps = await dbContact.query(contactTable,
@@ -65,7 +66,9 @@ class ContactHelper {
           columnEmail,
           columnAssunto,
           columnImg
-        ], where: "$columnId = ?", whereArgs: [id]);
+        ],
+        where: "$columnId = ?",
+        whereArgs: [id]);
     if (maps.length > 0) {
       return Contact.fromMap(maps.first);
     } else {
@@ -73,18 +76,21 @@ class ContactHelper {
     }
   }
 
+  //DELETE A SPECIFIC BANK CONTACT
   Future<int> deleteContact(int id) async {
     Database dbContact = await db;
     return await dbContact
         .delete(contactTable, where: "$columnId = ?", whereArgs: [id]);
   }
 
+  //EDIT A SPECIFIC BANK CONTACT
   Future<int> editContact(Contact contact) async {
     Database dbContact = await db;
     return await dbContact.update(contactTable, contact.toMap(),
         where: "$columnId = ?", whereArgs: [contact.id]);
   }
 
+  //GET ALL BANK CONTACTS
   Future<List> getAllContacts() async {
     Database dbContact = await db;
     List listMap = await dbContact.rawQuery("SELECT * FROM $contactTable");
@@ -95,22 +101,21 @@ class ContactHelper {
     return listContact;
   }
 
+  //GET HOW MANY CONTACTS ARE REGISTERED IN THE BANK
   Future<int> getNumber() async {
     Database dbContact = await db;
     return Sqflite.firstIntValue(
         await dbContact.rawQuery("SELECT COUNT(*) FROM $contactTable"));
   }
 
+  //CLOSE DATABASE
   Future close() async {
     Database dbContact = await db;
     dbContact.close();
   }
-
 }
 
-
-class Contact{
-
+class Contact {
   int id;
   String nome;
   String cargo;
@@ -124,33 +129,32 @@ class Contact{
   Contact();
 
   //Contructor contacts
-  Contact.fromMap(Map map){
-      id = map[columnId];
-      nome = map[columnNome];
-      cargo = map[columnCargo];
-      empresa = map[columnEmpresa];
-      tipoEmpresa = map[columnTipoEmpresa];
-      telefone = map[columnTelefone];
-      email = map[columnEmail];
-      assunto = map[columnAssunto];
-      img = map[columnImg];
-
+  Contact.fromMap(Map map) {
+    id = map[columnId];
+    nome = map[columnNome];
+    cargo = map[columnCargo];
+    empresa = map[columnEmpresa];
+    tipoEmpresa = map[columnTipoEmpresa];
+    telefone = map[columnTelefone];
+    email = map[columnEmail];
+    assunto = map[columnAssunto];
+    img = map[columnImg];
   }
 
   //function for returning map
   Map toMap() {
     Map<String, dynamic> map = {
-        columnNome: nome,
-        columnCargo: cargo,
-        columnEmpresa: empresa,
-        columnTipoEmpresa: tipoEmpresa,
-        columnTelefone: telefone,
-        columnEmail: email,
-        columnAssunto: assunto,
-        columnImg: img
+      columnNome: nome,
+      columnCargo: cargo,
+      columnEmpresa: empresa,
+      columnTipoEmpresa: tipoEmpresa,
+      columnTelefone: telefone,
+      columnEmail: email,
+      columnAssunto: assunto,
+      columnImg: img
     };
-    if(id != null){
-        map[columnId] = id;
+    if (id != null) {
+      map[columnId] = id;
     }
     return map;
   }
@@ -160,6 +164,4 @@ class Contact{
     return "Contact(id: $id, nome: $nome, cargo: $cargo, empresa: $empresa, "
         "tipoEmpresa: $tipoEmpresa, telefone: $telefone, email: $email, assunto: $assunto, imagem: $img)";
   }
-
-
 }
