@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sistema_contato/helpers/help_contacts.dart';
 import 'package:sistema_contato/interfaces/contact_page.dart';
 
+//variavel criada para ordenar por empresa
 //variables created for ordering
 enum OrderOptions { orderac, orderdesc }
 
@@ -34,6 +35,7 @@ class _ListScreenState extends State<ListScreen> {
         ),
         centerTitle: true,
         actions: <Widget>[
+          //botao na AppBar de ondenar os contatos por empresa
           //ORDER CONTATCS
           PopupMenuButton<OrderOptions>(
             itemBuilder: (context) => <PopupMenuEntry<OrderOptions>>[
@@ -63,6 +65,8 @@ class _ListScreenState extends State<ListScreen> {
         ),
         backgroundColor: Colors.orange,
         onPressed: () {
+          //chama uma função que, neste caso, não envia parâmetro para a tela contact_page,
+          //pois esta adicionando um novo contato
           //call a function that in this case does not send parameter to the contact_page screen
           _showContactPage();
         },
@@ -74,6 +78,7 @@ class _ListScreenState extends State<ListScreen> {
     );
   }
 
+  //função que exibi os contatos na tela e usa um deslise da esquerda para a direita para excluir o contato
   //FUNCTION SHOWING CONTACTS ON SCREEN AND USING A SLIDE TO THE EXCLUSION OF CONTACT
   Widget buildItem(context, index) {
     return Dismissible(
@@ -111,6 +116,7 @@ class _ListScreenState extends State<ListScreen> {
     );
   }
 
+  //função que recebe e manda os dados do contato para a contact_page
   //FUNCTION USED TO SEND AND RECEIVE CONTACTS TO SCREEN CONTACT_PAGE
   void _showContactPage({Contact contact}) async {
     final contactReceiv = await Navigator.push(context,
@@ -125,6 +131,7 @@ class _ListScreenState extends State<ListScreen> {
     }
   }
 
+  //obtem todos os contatos
   //GET ALL MY CONTACTS
   void _getAllContacts() {
     helper.getAllContacts().then((list) {
@@ -134,6 +141,8 @@ class _ListScreenState extends State<ListScreen> {
     });
   }
 
+  //função de orndenação, recebe como parametro uma variavel do tipo enum e verifica
+  // se o usuario quer ordenar por orden crescente ou descrecente por empresa
   //FUNCTION RECEIVING AS A PARAMETER A VARIABLE OF THE ENUM TYPE AND ORDERS CONTACTS BY COMPANY IN GROWING OR UNCREASING ORDER
   void _orderContacts(OrderOptions result) {
     switch (result) {

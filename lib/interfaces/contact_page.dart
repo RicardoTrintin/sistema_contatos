@@ -11,6 +11,7 @@ class ContactPage extends StatefulWidget {
 }
 
 class _ContactPageState extends State<ContactPage> {
+  //variaveis de controle dos TextFilds
   //CONTROL VARIABLES FOR TEXTFILDS
   final _nomeControler = TextEditingController();
   final _cargoControler = TextEditingController();
@@ -26,9 +27,11 @@ class _ContactPageState extends State<ContactPage> {
   final _empresaFocus = FocusNode();
   final _telefoneFocus = FocusNode();
 
+  //Variável que controla se o usuário clicou em algum campo para edição, se clicou uma mensagem de diálogo aparece
   //VARIABLE THAT CONTROLS IF THE USER CLICKED SOME FIELD FOR EDITING, IF CLICKED A DIALOG MESSAGE APPEARS
   bool _userEdited = false;
 
+  //VARIÁVEL DE CONTROLE DO CONTATO PASSADO OU NÃO PARA ESTA TELA
   //CONTACT CONTROL VARIABLE THAT WAS PASSED OR NOT FOR THIS SCREEN
   Contact _editContact;
 
@@ -36,6 +39,8 @@ class _ContactPageState extends State<ContactPage> {
   void initState() {
     super.initState();
 
+    //TESTA SE PASSADO COMO PARÂMETRO QUALQUER CONTATO PARA ESTE TELA. SE NAO FOR PASSADO NENHUM CONTATO A VARIÁVEL
+    // _EDITCONTACT RECEBE UM CONTATO VAZIO PARA SER CRIADO, SE PASSADO, RECEBE O MAPA DO CONTATO QUE FOI PASSADO COMO PARÂMETRO
     //TEST IF PASSED AS PARAMETER ANY CONTACT FOR THIS SCREEN
     // IF NOT VARIABLE _EDITCONTACT RECEIVES AN EMPTY CONTACT TO BE CREATED IF NOT,
     // RECEIVES MAP OF CONTACT THAT HAS BEEN PASSED AS PARAMETER
@@ -56,6 +61,7 @@ class _ContactPageState extends State<ContactPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      //CHAMA UMA FUNÇÃO PARA CONTROLAR O BOTÃO DE VOLTAR DA APPBAR
       //CALLS A FUNCTION TO CONTROL SCREEN BUTTON
       onWillPop: _butonBack,
       child: Scaffold(
@@ -79,6 +85,7 @@ class _ContactPageState extends State<ContactPage> {
           ),
           backgroundColor: Colors.orange,
           onPressed: () {
+            //VALIDACAO DOS CAMPOS
             //FILDE VALIDATION
             if (_editContact.nome != null &&
                 _editContact.nome.isNotEmpty &&
@@ -114,6 +121,7 @@ class _ContactPageState extends State<ContactPage> {
         body: SingleChildScrollView(
           padding: EdgeInsets.all(10.0),
           child: Column(
+            //CAMPOS PARA ADICIONAR UM CONTATO OU EDITAR SE O CONTATO FOI PASSADO PARA ESTA TELA
             //FIELDS WHERE THE CONTACT INFORMATION OR THE EMPTY FIELD APPEARS TO ADD A
             // CONTACT IF IT HAS NOT BEEN PASSED AS PARAMETER
             children: <Widget>[
@@ -206,6 +214,8 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
+  //FUNÇÃO QUE CONTROLE E APRESENTA UMA CAIXA DE DIÁLOGO DE PERGUNTA PARA O USUÁRIO,
+  // SE QUER OU NÃO CANCELAR AS ALTERAÇÕES FEITAS AO CONTATO, SE FOR EDITADO
   //FUNCTION THAT CONTROLS AND PRESENTS A QUESTION DIALOGUE TO THE USER IF IT
   // WANTS OR NOT DISCLOSES THE CHANGES MADE TO THE CONTACT IF IT HAS BEEN EDITED
   Future<bool> _butonBack() {
@@ -237,9 +247,11 @@ class _ContactPageState extends State<ContactPage> {
               ],
             );
           });
+      //RETORNA FALSO AO onWillPop, NÃO DEIXA VOLTAR A TELA DA PÁGINA DE CONTATO AUTOMATICAMENTE PORQUE O USUÁRIO FEZ MUDANÇAS NO CONTATO
       //FALSE BACK TO onWillPop NOT TO LEAVE THE CONTACT PAGE SCREEN AUTOMATICALLY BECAUSE USER MAKES CHANGE TO CONTACT
       return Future.value(false);
     } else {
+      //RETORNA VERDADEIRO AO onWillPop PARA SAIR DA TELA CONTACT_PAGE AUTOMATICAMENTE PORQUE O USUÁRIO NÃO FEZ NENHUMA EDIÇÃO NO CONTATO
       //TRUE RETURNS TO onWillPop TO LEAVE SCREEN CONTACT_PAGE AUTOMATICALLY BECAUSE USER HAS NOT MADE CONTACT
       return Future.value(true);
     }

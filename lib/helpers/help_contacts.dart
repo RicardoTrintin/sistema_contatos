@@ -1,9 +1,11 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+//VARIAVEL DE CONTROLE DO BANCO
 //BANK TABLE CONTROL VARIABLE
 final String contactTable = "contacTable";
 
+//VARIAVEIS DE CONTROLE DAS COLUNAS DO BANCO
 //BANK COLUMNS CONTROL VARIABLES
 final String columnId = "columnId";
 final String columnNome = "columnNome";
@@ -45,6 +47,7 @@ class ContactHelper {
     });
   }
 
+  //SALVA CONTATO NO BANCO
   //SAVE CONTACT IN DATABASE
   Future<Contact> saveContact(Contact contact) async {
     Database dbContact = await db;
@@ -52,6 +55,7 @@ class ContactHelper {
     return contact;
   }
 
+  //OBTEM OS DADOS DE UM CONTATO NO BANCO
   //GET A SPECIFIC BANK CONTACT
   Future<Contact> getContact(int id) async {
     Database dbContact = await db;
@@ -76,6 +80,7 @@ class ContactHelper {
     }
   }
 
+  //DELTELA UM CONTATO DO BANCO
   //DELETE A SPECIFIC BANK CONTACT
   Future<int> deleteContact(int id) async {
     Database dbContact = await db;
@@ -83,6 +88,7 @@ class ContactHelper {
         .delete(contactTable, where: "$columnId = ?", whereArgs: [id]);
   }
 
+  //EDITA UM CONTATO NO BANCO
   //EDIT A SPECIFIC BANK CONTACT
   Future<int> editContact(Contact contact) async {
     Database dbContact = await db;
@@ -90,6 +96,7 @@ class ContactHelper {
         where: "$columnId = ?", whereArgs: [contact.id]);
   }
 
+  //OBTEM TODOS OS CONTATOS DO BANCO
   //GET ALL BANK CONTACTS
   Future<List> getAllContacts() async {
     Database dbContact = await db;
@@ -101,6 +108,7 @@ class ContactHelper {
     return listContact;
   }
 
+  //OBTEM O TOTAL DE CONTATOS REGISTRADOS NO BANCO
   //GET HOW MANY CONTACTS ARE REGISTERED IN THE BANK
   Future<int> getNumber() async {
     Database dbContact = await db;
@@ -108,6 +116,7 @@ class ContactHelper {
         await dbContact.rawQuery("SELECT COUNT(*) FROM $contactTable"));
   }
 
+  //FECHA O BANCO
   //CLOSE DATABASE
   Future close() async {
     Database dbContact = await db;
@@ -128,6 +137,7 @@ class Contact {
 
   Contact();
 
+  //CONSTRUTOR DA CLASSE CONTACT_PAGE
   //Contructor contacts
   Contact.fromMap(Map map) {
     id = map[columnId];
@@ -141,6 +151,7 @@ class Contact {
     img = map[columnImg];
   }
 
+  //FUNÇÃO QUE RETORNA UM MAPA DO CONTATO
   //function for returning map
   Map toMap() {
     Map<String, dynamic> map = {
